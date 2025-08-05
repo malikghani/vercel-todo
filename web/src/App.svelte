@@ -108,7 +108,6 @@
     {/each}
   </ul>
 </main>
-</main>
 
 <style global>
   @import './app.css';
