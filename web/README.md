@@ -45,3 +45,11 @@ If you have state that's important to retain within a component, consider creati
 import { writable } from 'svelte/store'
 export default writable(0)
 ```
+
+## Environment Variables
+
+Create a `.env` file at the project root with the following value to configure the API base path:
+
+```env
+VITE_API_URL=/api
+```

@@ -5,7 +5,8 @@
   let newTodo = ''
   let error: string | null = null
 
-  const api = '/api'
+  // API base path from environment (defaults to Vite proxy '/api')
+  const api = import.meta.env.VITE_API_URL || '/api'
 
   async function loadTodos() {
     try {
