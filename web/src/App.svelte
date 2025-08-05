@@ -10,8 +10,14 @@
   async function loadTodos() {
     try {
       const res = await fetch(`${api}/list_todo`)
+      if (!res.ok) {
+        const errText = await res.text()
+        throw new Error(errText || res.statusText)
+      }
       const data = await res.json()
-      todos = data.todos.map((t: any) => t.name)
+      todos = Array.isArray(data.todos)
+        ? data.todos.map((t: any) => t.name)
+        : []
     } catch (e: any) {
       error = e.message
     }
@@ -20,11 +26,15 @@
   async function addTodo() {
     if (!newTodo.trim()) return
     try {
-      await fetch(`${api}/add_todo`, {
+      const res = await fetch(`${api}/add_todo`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: newTodo })
       })
+      if (!res.ok) {
+        const errText = await res.text()
+        throw new Error(errText || res.statusText)
+      }
       newTodo = ''
       loadTodos()
     } catch (e: any) {
@@ -34,11 +44,15 @@
 
   async function deleteTodo(name: string) {
     try {
-      await fetch(`${api}/delete_todo`, {
+      const res = await fetch(`${api}/delete_todo`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name })
       })
+      if (!res.ok) {
+        const errText = await res.text()
+        throw new Error(errText || res.statusText)
+      }
       loadTodos()
     } catch (e: any) {
       error = e.message
