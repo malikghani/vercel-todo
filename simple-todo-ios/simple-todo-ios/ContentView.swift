@@ -14,25 +14,42 @@ import SwiftUI
         NavigationView {
             VStack {
                 HStack {
-                    TextField("New todo", text: $viewModel.newTodo)
-                        .textFieldStyle(.roundedBorder)
-                    Button("Add") {
-                        Task { await viewModel.addTodo() }
+                    TextField("Enter new todo…", text: $viewModel.newTodo)
+                        .padding(8)
+                        .background(Color(.secondarySystemBackground))
+                        .cornerRadius(8)
+                    Button(action: { Task { await viewModel.addTodo() } }) {
+                        Text("Add")
+                            .font(.headline)
+                            .frame(minWidth: 60)
                     }
                     .buttonStyle(.borderedProminent)
+                    .tint(.blue)
+                    .controlSize(.large)
                 }
                 .padding()
 
                 List {
                     ForEach(viewModel.todos) { todo in
-                        Text(todo.name)
-                            .transition(.move(edge: .trailing).combined(with: .opacity))
+                        HStack {
+                            Text(todo.name)
+                                .font(.body)
+                                .foregroundColor(.primary)
+                            Spacer()
+                        }
+                        .padding()
+                        .background(Color(.systemGray6))
+                        .cornerRadius(8)
+                        .transition(.move(edge: .trailing).combined(with: .opacity))
                     }
                     .onDelete { offsets in
                         Task { await viewModel.deleteTodo(at: offsets) }
                     }
                 }
                 .listStyle(.plain)
+                .refreshable {
+                    await viewModel.loadTodos()
+                }
                 .animation(.easeInOut, value: viewModel.todos)
             }
             .navigationTitle("Todos")
@@ -45,6 +62,7 @@ import SwiftUI
             }
         }
         .task { await viewModel.loadTodos() }
+        .padding(.horizontal)
     }
 }
 
