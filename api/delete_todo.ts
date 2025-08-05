@@ -1,10 +1,10 @@
-// api/add_todo.ts
+// api/delete_todo.ts
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { addTodo } from '../lib/todos.js'
+import { deleteTodo } from '../lib/todos.js'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  if (req.method !== 'POST') {
-    res.setHeader('Allow', ['POST'])
+  if (req.method !== 'DELETE') {
+    res.setHeader('Allow', ['DELETE'])
     res.status(405).json({ error: `Method ${req.method} Not Allowed` })
     return
   }
@@ -15,6 +15,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return
   }
 
-  await addTodo(name)
-  res.status(200).json({ name })
+  const success = await deleteTodo(name)
+  if (success) {
+    res.status(200).json({ success: true })
+  } else {
+    res.status(404).json({ error: 'Todo not found' })
+  }
 }
