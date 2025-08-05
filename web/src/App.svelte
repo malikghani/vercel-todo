@@ -6,7 +6,10 @@
   let error: string | null = null
 
   // API base path from environment (defaults to Vite proxy '/api')
-  const api = import.meta.env.VITE_API_URL || '/api'
+  // API base path: use env var or default to production Vercel URL
+  const api =
+    import.meta.env.VITE_API_URL ||
+    'https://todo-theta-lime.vercel.app/api'
 
   async function loadTodos() {
     try {
