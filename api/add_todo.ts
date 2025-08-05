@@ -1,6 +1,6 @@
 // api/add_todo.ts
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { addTodo } from '../lib/todos.js'
+import { supabase } from '../lib/supabase'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {
@@ -15,6 +15,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return
   }
 
-  await addTodo(name)
+  const { error } = await supabase
+    .from('todos')
+    .insert([{ name }])
+
+  if (error) {
+    res.status(500).json({ error: error.message })
+    return
+  }
+
   res.status(200).json({ name })
 }

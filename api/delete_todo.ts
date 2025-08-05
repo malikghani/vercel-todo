@@ -1,6 +1,6 @@
 // api/delete_todo.ts
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { deleteTodo } from '../lib/todos.js'
+import { supabase } from '../lib/supabase'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'DELETE') {
@@ -15,10 +15,20 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return
   }
 
-  const success = await deleteTodo(name)
-  if (success) {
-    res.status(200).json({ success: true })
-  } else {
-    res.status(404).json({ error: 'Todo not found' })
+  const { data, error } = await supabase
+    .from('todos')
+    .delete()
+    .eq('name', name)
+
+  if (error) {
+    res.status(500).json({ error: error.message })
+    return
   }
+
+  if (data.length === 0) {
+    res.status(404).json({ error: 'Todo not found' })
+    return
+  }
+
+  res.status(200).json({ success: true })
 }

@@ -12,6 +12,7 @@
   "type": "module",
   "dependencies": {
     "@vercel/node": "^2.15.10",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.2",
+    "@supabase/supabase-js": "^2.22.1"
   }
 }
