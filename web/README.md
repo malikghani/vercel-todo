@@ -55,8 +55,28 @@ You can point the web app to your Vercel deployment directly without an `.env` f
 const api = import.meta.env.VITE_API_URL || 'https://todo-theta-lime.vercel.app/api'
 ```
 
-Or create a `.env` at the project root to override the value:
+Or create a `.env` at the project root to override the default API prefix.
 
 ```env
 VITE_API_URL=https://todo-theta-lime.vercel.app/api
 ```
+---
+
+## Local development (API + web)
+
+This project includes a Vercel API at the parent level (`/api/*`) and a Svelte frontend under `/web`. To work locally:
+
+1. **Run your API routes**
+   ```bash
+   # in the project root
+   vercel dev
+   ```
+
+2. **Run the web app**
+   ```bash
+   cd web
+   npm install
+   npm run dev
+   ```
+
+Now browse to http://localhost:5173 to see the Svelte UI proxying `/api` to your local API server.
