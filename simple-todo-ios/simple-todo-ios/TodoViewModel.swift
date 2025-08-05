@@ -12,7 +12,10 @@ class TodoViewModel: ObservableObject {
 
     func loadTodos() async {
         do {
-            todos = try await service.fetchTodos()
+            let fetched = try await service.fetchTodos()
+            withAnimation(.easeInOut) {
+                todos = fetched
+            }
         } catch {
             errorMessage = error.localizedDescription
             showError = true
@@ -24,7 +27,9 @@ class TodoViewModel: ObservableObject {
         guard !name.isEmpty else { return }
         do {
             try await service.addTodo(name: name)
-            newTodo = ""
+            withAnimation(.easeInOut) {
+                newTodo = ""
+            }
             await loadTodos()
         } catch {
             errorMessage = error.localizedDescription
