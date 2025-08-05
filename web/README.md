@@ -48,8 +48,15 @@ export default writable(0)
 
 ## Environment Variables
 
-Create a `.env` file at the project root with the following value to configure the API base path:
+You can point the web app to your Vercel deployment directly without an `.env` file:
+
+```js
+// in src/App.svelte
+const api = import.meta.env.VITE_API_URL || 'https://todo-theta-lime.vercel.app/api'
+```
+
+Or create a `.env` at the project root to override the value:
 
 ```env
-VITE_API_URL=/api
+VITE_API_URL=https://todo-theta-lime.vercel.app/api
 ```
