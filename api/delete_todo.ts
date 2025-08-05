@@ -19,6 +19,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     .from('todos')
     .delete()
     .eq('name', name)
+    .select('name')
 
   if (error) {
     res.status(500).json({ error: error.message })
