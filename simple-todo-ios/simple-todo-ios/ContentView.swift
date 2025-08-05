@@ -26,12 +26,14 @@ import SwiftUI
                 List {
                     ForEach(viewModel.todos) { todo in
                         Text(todo.name)
+                            .transition(.move(edge: .trailing).combined(with: .opacity))
                     }
                     .onDelete { offsets in
                         Task { await viewModel.deleteTodo(at: offsets) }
                     }
                 }
                 .listStyle(.plain)
+                .animation(.easeInOut, value: viewModel.todos)
             }
             .navigationTitle("Todos")
             .alert("Error", isPresented: $viewModel.showError) {
