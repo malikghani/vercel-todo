@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte'
-  import { fly } from 'svelte/transition'
+  import { fly, fade } from 'svelte/transition'
   let todos: string[] = []
   let newTodo = ''
   let error: string | null = null
@@ -66,31 +66,40 @@
   onMount(loadTodos)
 </script>
 
-<main class="max-w-xl mx-auto p-4">
-  <h1 class="text-2xl font-bold mb-4">Todo List</h1>
-  <div class="flex mb-4">
+<main class="min-h-screen bg-gray-100 dark:bg-gray-900 p-6 flex items-start justify-center">
+  <div in:fade={{ duration: 400 }} class="w-full max-w-md bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 space-y-4">
+    <h1 class="text-3xl font-extrabold text-gray-800 dark:text-gray-100 text-center">
+      Todo List
+    </h1>
+    <div class="flex mb-4 space-x-2">
     <input
       bind:value={newTodo}
       placeholder="New todo"
-      class="flex-grow border rounded p-2 mr-2"
+      class="flex-grow border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 bg-gray-50 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
     />
-    <button class="bg-blue-500 text-white px-4 rounded" on:click={addTodo}>
+    <button
+      class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-lg shadow"
+      on:click={addTodo}
+    >
       Add
     </button>
   </div>
-  {#if error}
-    <div class="text-red-600 mb-4">{error}</div>
-  {/if}
-  <ul class="space-y-2">
+    {#if error}
+      <div class="text-red-600 bg-red-100 dark:bg-red-200 p-3 rounded">
+        {error}
+      </div>
+    {/if}
+</div>
+  <ul class="mt-4 grid gap-3">
     {#each todos as todo (todo)}
       <li
-        class="flex justify-between items-center bg-gray-100 p-2 rounded transition transform hover:scale-105"
-        in:fly={{ x: 200, duration: 300 }}
-        out:fly={{ x: -200, duration: 300 }}
+        class="bg-gray-50 dark:bg-gray-700 rounded-lg shadow flex justify-between items-center px-4 py-2 hover:shadow-md transition-shadow"
+        in:fly={{ y: 20, duration: 300 }}
+        out:fly={{ y: -20, duration: 300 }}
       >
-        <span>{todo}</span>
+        <span class="text-gray-800 dark:text-gray-200">{todo}</span>
         <button
-          class="text-red-500"
+          class="text-red-500 hover:text-red-700 font-medium"
           on:click={() => deleteTodo(todo)}
         >
           Delete
@@ -98,6 +107,7 @@
       </li>
     {/each}
   </ul>
+</main>
 </main>
 
 <style global>
