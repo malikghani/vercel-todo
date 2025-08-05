@@ -34,8 +34,12 @@ import SwiftUI
                 .listStyle(.plain)
             }
             .navigationTitle("Todos")
-            .alert(item: $viewModel.errorMessage) { msg in
-                Alert(title: Text("Error"), message: Text(msg), dismissButton: .default(Text("OK")))
+            .alert("Error", isPresented: $viewModel.showError) {
+                Button("OK", role: .cancel) {
+                    viewModel.errorMessage = nil
+                }
+            } message: {
+                Text(viewModel.errorMessage ?? "Unknown error")
             }
         }
         .task { await viewModel.loadTodos() }

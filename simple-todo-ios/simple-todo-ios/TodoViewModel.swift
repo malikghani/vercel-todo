@@ -6,6 +6,7 @@ class TodoViewModel: ObservableObject {
     @Published var todos: [Todo] = []
     @Published var newTodo: String = ""
     @Published var errorMessage: String?
+    @Published var showError: Bool = false
 
     private let service = TodoService()
 
@@ -14,6 +15,7 @@ class TodoViewModel: ObservableObject {
             todos = try await service.fetchTodos()
         } catch {
             errorMessage = error.localizedDescription
+            showError = true
         }
     }
 
@@ -26,6 +28,7 @@ class TodoViewModel: ObservableObject {
             await loadTodos()
         } catch {
             errorMessage = error.localizedDescription
+            showError = true
         }
     }
 
@@ -37,6 +40,7 @@ class TodoViewModel: ObservableObject {
             await loadTodos()
         } catch {
             errorMessage = error.localizedDescription
+            showError = true
         }
     }
 }
