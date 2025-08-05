@@ -25,7 +25,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return
   }
 
-  if (data.length === 0) {
+  if (!Array.isArray(data) || data.length === 0) {
     res.status(404).json({ error: 'Todo not found' })
     return
   }
