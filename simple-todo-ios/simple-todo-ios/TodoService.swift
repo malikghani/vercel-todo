@@ -28,7 +28,8 @@ struct Todo: Codable, Identifiable, Hashable {
 }
 
 class TodoService {
-    private let baseURL = "https://<YOUR_PROJECT_DOMAIN>"
+    // Use the same base URL as your backend deployment (Vercel or Supabase function gateway)
+    private let baseURL = "https://erljroubjknqplalateu.supabase.co"
 
     func fetchTodos() async throws -> [Todo] {
         guard let url = URL(string: "\(baseURL)/api/list_todo") else { throw TodoServiceError.invalidURL }
